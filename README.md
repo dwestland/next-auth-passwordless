@@ -4,7 +4,7 @@
 
 ## Notes from creating this repository
 
-**Started from the next-auth-repository**
+**Started from the next-auth-github repository**
 
 **Start dev:**
 
