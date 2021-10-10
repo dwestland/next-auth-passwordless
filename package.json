@@ -1,5 +1,5 @@
 {
-  "name": "next-auth-github",
+  "name": "next-auth-passwordless",
   "version": "0.1.0",
   "private": true,
   "scripts": {

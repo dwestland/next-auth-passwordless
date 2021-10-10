@@ -1,8 +1,10 @@
-# next-auth-github
+# next-auth-passwordless
+
+**Using SendGrid**
 
 ## Notes from creating this repository
 
-**Started from next-typescript-prettier-eslint**
+**Started from the next-auth-repository**
 
 **Start dev:**
 
@@ -10,89 +12,43 @@
 npm run dev
 ```
 
-**Add dependency:**
+## Create a SendGrid API key
+
+https://app.sendgrid.com/
+
+Go to: Email API>Integration Guide, Choose "SMTP Relay" to create API key
+
+**Add environmental variables, add API key as password and the verified email at the From Email to the .env file:**
 
 ```
-npm i next-auth
+EMAIL_SERVER_HOST=smtp.sendgrid.net
+EMAIL_SERVER_PORT=465
+EMAIL_SERVER_USER=apikey
+EMAIL_SERVER_PASSWORD=
+EMAIL_FROM=
 ```
 
-**Add dev dependencies:**
+**Create a verified email:**
+
+https://app.sendgrid.com/
+
+Go to: Settings>Sender Authentication, to authenticate an email
+Add a "Single Sender Verification" email
+
+**Add email provider to [...nextauth] file:**
 
 ```
-npm i -D prisma @types/next-auth
-```
-
-**Create new local database:**
-
-```
-postgres=# CREATE DATABASE next_auth_github;
-```
-
-**Initialize Prisma:**
-
-```
-npx prisma init
-```
-
-**Add database URL to .env file, use .env.example file:**
-
-```
-DATABASE_URL="postgresql://myUsername:myPassword@localhost:5432/next_auth_github?schema=public"
-```
-
-**Add .env to the .gitignore file**
-
-**Add schema.prisma routes (from the repository linked below)**
-
-**Migrate database:**
-
-```
-npx prisma migrate dev --name init
-```
-
-**Launch Prisma Studio to view tables:**
-
-```
-npx prisma studio
-```
-
-**Generate Prisma Client with the following command**
-
-```
-npx prisma generate
-```
-
-**Allows Prisma Client in your code:**
-
-```
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
-```
-
-**Configure NextAuth, create a /pages/api/[...nextauth].ts file:**
-
-**Add an GetHub OAuth App, go to Settings>Developer Settings>OAuth Apps and create new app:**
-
-- Application name: next-auth-github
-- Homepage URL: http://localhost:3000
-- Authorization callback URL: http://localhost:3000/api/auth
-
-**A new app needs to be created for a production callback URL**
-
-**Get GITHUB_ID and GITHUB_SECRET and add to .env file**
-
-**Add the following files from the repository linked below:**
-
-- pages/api/auth/[...nextauth].ts
-- pages/api/auth/secret.ts
-- pages/\_app.tsx (add Provider)
-- pages/index.tsx
-
-**Re-start dev:**
-
-```
-Ctl-C
-npm run dev
+    Providers.Email({
+        server: {
+          host: process.env.EMAIL_SERVER_HOST,
+          port: process.env.EMAIL_SERVER_PORT,
+          auth: {
+            user: process.env.EMAIL_SERVER_USER,
+            pass: process.env.EMAIL_SERVER_PASSWORD
+          }
+        },
+        from: process.env.EMAIL_FROM
+    }),
 ```
 
 **Should work now**
@@ -101,8 +57,8 @@ npm run dev
 
 ### Settings are from:
 
-**Building with Next.js and Prisma: Passwordless Authentication with next-auth**
+**Next.js | Passwordless Sign In with NextAuth.js and SendGrid**
 
-https://www.youtube.com/watch?v=GPBD3acOx_M&t=430s
+https://www.youtube.com/watch?v=61sMBUOUVww&t=301s
 
-https://github.com/hexrcs/prisma-next-auth
+https://gitlab.com/pragmaticreviews/next.js-jobs-app/-/tree/nextauth-passwordless
