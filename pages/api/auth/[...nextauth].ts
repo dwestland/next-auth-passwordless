@@ -38,8 +38,8 @@ export default NextAuth({
           user: process.env.EMAIL_SERVER_USER,
           pass: process.env.EMAIL_SERVER_PASSWORD,
         },
-        from: process.env.EMAIL_FROM,
       },
+      from: process.env.EMAIL_FROM,
     }),
   ],
   adapter: PrismaAdapter(prisma),
@@ -49,6 +49,3 @@ export default NextAuth({
     logo: '/vercel.svg',
   },
 })
-
-// const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, options)
-// export default authHandler
