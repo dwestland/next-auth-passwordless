@@ -1,19 +1,36 @@
 import NextAuth from 'next-auth'
-import Providers from 'next-auth/providers'
-import Adapters from 'next-auth/adapters'
-
-import { NextApiHandler } from 'next'
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { PrismaClient } from '@prisma/client'
+import GithubProvider from 'next-auth/providers/github'
+import GoogleProvider from 'next-auth/providers/google'
+import EmailProvider from 'next-auth/providers/email'
 
 const prisma = new PrismaClient()
 
-const options = {
+// // too many connections during local development
+// let prisma: PrismaClient
+
+// if (process.env.NODE_ENV === 'production') {
+//   prisma = new PrismaClient()
+// } else {
+//   if (!global.prisma) {
+//     global.prisma = new PrismaClient()
+//   }
+//   prisma = global.prisma
+// }
+
+export default NextAuth({
   providers: [
-    Providers.GitHub({
+    GithubProvider({
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
     }),
-    Providers.Email({
+
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+    EmailProvider({
       server: {
         host: process.env.EMAIL_SERVER_HOST,
         port: process.env.EMAIL_SERVER_PORT,
@@ -25,13 +42,10 @@ const options = {
       from: process.env.EMAIL_FROM,
     }),
   ],
-  // @ts-ignore
-  adapter: Adapters.Prisma.Adapter({
-    prisma,
-  }),
-
+  adapter: PrismaAdapter(prisma),
   secret: process.env.SECRET,
-}
-
-const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, options)
-export default authHandler
+  theme: {
+    colorScheme: 'light',
+    logo: '/vercel.svg',
+  },
+})

@@ -12,6 +12,18 @@
 npm run dev
 ```
 
+**Generate Prisma Client with the following command**
+
+```
+npx prisma generate
+```
+
+**Migrate database:**
+
+```
+npx prisma migrate dev --name init
+```
+
 ## Create a SendGrid API key
 
 https://app.sendgrid.com/
